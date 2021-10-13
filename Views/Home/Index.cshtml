@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = Localizer["Home"];
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido a Travelinci</h1>
+    <img src="~/imagenes/logo128.png" alt="travelinci" width="128" height="128" class="mt-5" />
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="form-group col-md-6 offset-md-3  mt-4">
+            <h2 class="text-success text-center">Administrador @ViewData["currentUser"]</h2>
+        </div>
+    }
+    else
+    {
+        <div class="form-group col-md-6 offset-md-3  mt-4">
+            <h2 class="text-success text-center">Usuario @ViewData["currentUser"]</h2>
+        </div>
+    }
+
+</div>

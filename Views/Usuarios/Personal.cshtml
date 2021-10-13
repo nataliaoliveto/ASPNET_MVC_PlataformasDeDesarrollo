@@ -1,0 +1,52 @@
+﻿@model Final.Models.Usuario
+
+@{
+    ViewData["Title"] = "Mi cuenta";
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
+@if (TempData["status"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@TempData["status"]");
+            };
+    </script>
+}
+<h1>Mi cuenta</h1>
+
+<h4 class="text-success">Editar</h4>
+<div class="form-group mt-3">
+    <a asp-action="Edit" asp-route-id="@User.Identity.Name" asp-route-personal="@ViewData["personal"]" class="ml-3"><img src="/imagenes/edit32.png" alt="editar" width="32" height="32" /></a>
+    <a asp-action="ChangePassword" asp-route-id="@User.Identity.Name" asp-route-personal="@ViewData["personal"]" class="ml-3"><img src="/imagenes/padlock32.png" alt="cambiarpassword" width="32" height="32" /></a>
+</div>
+    <hr />
+    <div>
+        <dl class="row">
+            <dt class="col-sm-3">
+                DNI
+            </dt>
+            <dd class="col-sm-7">
+                @Html.DisplayFor(model => model.DNI)
+            </dd>
+            <dt class="col-sm-3">
+                Nombre
+            </dt>
+            <dd class="col-sm-7">
+                @Html.DisplayFor(model => model.nombre)
+            </dd>
+            <dt class="col-sm-3">
+                Mail
+            </dt>
+            <dd class="col-sm-7">
+                @Html.DisplayTextFor(model => model.mail)
+            </dd>
+        </dl>        
+    </div>

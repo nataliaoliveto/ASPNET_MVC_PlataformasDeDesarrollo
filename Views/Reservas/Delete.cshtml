@@ -1,0 +1,83 @@
+﻿@model Final.Models.Reserva
+
+@{
+    ViewData["Title"] = "Eliminar Reserva";
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
+@if (TempData["status"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@TempData["status"]");
+            };
+    </script>
+}
+<h1>Eliminar</h1>
+
+<h3 class="text-warning">Reserva N° @Html.DisplayFor(model => model.id)</h3>
+<div>
+    <div>
+        <img src="/imagenes/siren32.png" alt="alerta" width="32" height="32" class="mb-2" />
+        <h4 class="text-danger d-inline-block mt-1">
+            Acción irreversible
+        </h4>
+        <img src="/imagenes/siren32.png" alt="alerta" width="32" height="32" class="mb-2" />
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            Fecha inicio de reserva
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.fDesde)
+        </dd>
+        <dt class="col-sm-3">
+            Fecha fin de reserva
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.fHasta)
+        </dd>
+        <dt class="col-sm-3">
+            N° Alojamiento
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.propiedad.id)
+        </dd>
+        <dt class="col-sm-3">
+            Usuario
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.persona.id)
+        </dd>
+        <dt class="col-sm-3">
+            Valor
+        </dt>
+        <dd class="col-sm-7">
+            $ @Html.DisplayFor(model => model.precio)
+        </dd>
+        <dt class="col-sm-3">
+            Cantidad de personas
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.cantPersonas)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <div class="form-group mt-3">
+            <input type="hidden" asp-for="id" />
+            <input type="submit" value="Eliminar reserva" class="btn btn-danger" />
+            <div>
+                <a asp-action="Index"><img src="/imagenes/deshacer32flat.png" alt="regresar" width="32" height="32" class="mt-3" /></a>
+            </div>
+        </div>
+    </form>
+</div>

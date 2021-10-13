@@ -1,0 +1,47 @@
+﻿@model Final.Models.Usuario
+
+@{
+    ViewData["Title"] = "Logout";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Travelinci</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-darkly.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+        </script>
+    }
+
+</head>
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="col-md-6 offset-md-3 mt-4 text-center">
+                <h1 class="display-4">Gracias por visitar Travelinci</h1>
+                <img src="~/imagenes/logo128.png" alt="travelinci" width="128" height="128" class="mt-5" />
+                <div class="form-group mt-4">
+                    <button class="btn btn-outline-success btn-block col-md-6 "><a asp-area="" asp-controller="Logins" asp-action="Index" class="link-success col-md-6 text-decoration-none text-white">Pantalla principal</a></button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 Primera Escuela Multimedial Da Vinci - ACN4A Final Plataformas de Desarrollo
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

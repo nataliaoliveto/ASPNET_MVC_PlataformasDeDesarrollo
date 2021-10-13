@@ -1,0 +1,94 @@
+﻿@model Final.Models.Alojamiento
+
+@{
+    ViewData["Title"] = "Crear Cabaña";
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
+@if (TempData["status"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@TempData["status"]");
+            };
+    </script>
+}
+<h1>Alojamientos</h1>
+
+<h4 class="text-success">Nueva Cabaña</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateCabania">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group form-label mt-3">
+                <label asp-for="aCodigo" class="control-label"> Código</label>
+                <input asp-for="aCodigo" class="form-control border-info text-info" required />
+                <span asp-validation-for="aCodigo" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="aCiudad" class="control-label"> Ciudad</label>
+                <input asp-for="aCiudad" class="form-control border-info text-info" required />
+                <span asp-validation-for="aCiudad" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="aBarrio" class="control-label"> Barrio</label>
+                <input asp-for="aBarrio" class="form-control border-info text-info" required />
+                <span asp-validation-for="aBarrio" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="aEstrellas" class="control-label"> Estrellas</label>
+                <select asp-for="aEstrellas" class="form-select border-info text-info" id="aEstrellas" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="aCantPersonas" class="control-label"> Cantidad de Personas</label>
+                <input asp-for="aCantPersonas" type="number" min="1" class="form-control border-info text-info" required />
+                <span asp-validation-for="aCantPersonas" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check mt-3">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="aTV" /> ¿Tiene TV?
+                </label>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="cPrecioxDia" class="control-label"> Precio por día</label>
+                <input asp-for="cPrecioxDia" type="number" min="1" class="form-control border-info text-info" required />
+                <span asp-validation-for="cPrecioxDia" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="cHabitaciones" class="control-label"> Cantidad de habitaciones</label>
+                <input asp-for="cHabitaciones" type="number" min="1" class="form-control border-info text-info" required />
+                <span asp-validation-for="cHabitaciones" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="cbanios" class="control-label"> Cantidad de baños</label>
+                <input asp-for="cbanios" type="number" min="1" class="form-control border-info text-info" required />
+                <span asp-validation-for="cbanios" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Crear Cabaña" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index"><img src="/imagenes/deshacer32flat.png" alt="regresar" width="32" height="32" class="mt-3" /></a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

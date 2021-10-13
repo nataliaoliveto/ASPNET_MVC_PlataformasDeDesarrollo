@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Final.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
+@if (TempData["status"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@TempData["status"]");
+            };
+    </script>
+}
+
+<h1>Usuarios <a asp-action="Create" class="text-white text-decoration-none"><img src="/imagenes/agregar32.png" alt="agregar" width="32" height="32" class="m-2" /></a></h1>
+
+<table class="table table-hover">
+    <thead>
+        <tr class="table-success">
+            <th scope="row">
+                DNI
+            </th>
+            <th scope="row">
+                Nombre
+            </th>
+            <th scope="row">
+                Mail
+            </th>
+            <th scope="row">
+                Admin?
+            </th>
+            <th scope="row">
+                Bloqueado?
+            </th>
+            <th scope="row">
+                Acciones
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-dark">
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNI)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayTextFor(modelItem => item.mail)
+                </td>
+
+                @if (@Html.DisplayTextFor(modelItem => item.esADMIN).ToUpper() == "TRUE")
+                {
+                    <td>Sí</td>
+                }
+                else
+                {
+                    <td>No</td>
+                }
+
+                @if (@Html.DisplayTextFor(modelItem => item.bloqueado).ToUpper() == "TRUE")
+                {
+                    <td>Sí</td>
+                }
+                else
+                {
+                    <td>No</td>
+                }
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id" asp-route-personal="@ViewData["personal"]"><img src="/imagenes/edit32.png" alt="editar" width="32" height="32" /></a>
+                    <a asp-action="ChangePassword" asp-route-id="@item.id" asp-route-personal="@ViewData["personal"]"><img src="/imagenes/padlock32.png" alt="cambiarpassword" width="32" height="32" /></a>
+                    <a asp-action="Delete" asp-route-id="@item.id" asp-route-personal="@ViewData["personal"]"><img src="/imagenes/suprimir32.png" alt="eliminar" width="32" height="32" /></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Final.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Reservas";
+}
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
+@if (TempData["status"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+                alert("@TempData["status"]");
+            };
+    </script>
+}
+<h1>Reservas</h1>
+
+<table class="table table-hover">
+    <thead>
+        <tr class="table-success">
+            <th scope="row">
+                Fecha comienzo reserva
+            </th>
+            <th scope="row">
+                Fecha fin reserva
+            </th>
+            <th scope="row">
+                N° Alojamiento
+            </th>
+            <th scope="row">
+                Usuario
+            </th>
+            <th scope="row">
+                Precio
+            </th>
+            <th scope="row">
+                Cant. Personas
+            </th>
+            <th scope="row">
+                Acciones
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-dark">
+                <td>
+                    @Html.DisplayFor(modelItem => item.fDesde)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fHasta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.propiedad.id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.persona.DNI)
+                </td>
+                <td>
+                    $ @Html.DisplayFor(modelItem => item.precio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.cantPersonas)
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.id"><img src="/imagenes/edit32.png" alt="editar" width="32" height="32" /></a>
+                    }
+                        <a asp-action="Delete" asp-route-id="@item.id"><img src="/imagenes/suprimir32.png" alt="eliminar" width="32" height="32" /></a>
+                    </td>
+            </tr>
+        }
+    </tbody>
+</table>

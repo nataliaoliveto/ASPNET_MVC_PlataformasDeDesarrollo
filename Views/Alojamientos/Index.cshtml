@@ -1,0 +1,335 @@
+﻿@model IEnumerable<Final.Models.Alojamiento>
+
+@{
+    ViewData["Title"] = "Alojamientos";
+}
+@if (ViewBag.Message != null)
+{
+<script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+        };
+</script>
+}
+
+@if (TempData["status"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@TempData["status"]");
+            };
+    </script>
+}
+
+<h1>
+    Alojamientos
+    @if (User.IsInRole("Admin"))
+    {
+        <button type="button" class="btn btn-outline-success m-2">
+            <a asp-action="CreateHotel" class="text-white text-decoration-none"><img src="/imagenes/agregar32.png" alt="agregar" width="32" height="32" class="m-2" /><img src="/imagenes/hotels32.png" alt="hotel" width="32" height="32" class="m-2" /></a>
+        </button>
+        <button type="button" class="btn btn-outline-success m-2"><a asp-action="CreateCabania" class="text-white text-decoration-none"><img src="/imagenes/agregar32.png" alt="agregar" width="32" height="32" class="m-2" /><img src="/imagenes/cabin32.png" alt="cabania" width="32" height="32" class="m-2" /></a></button>
+    }
+
+</h1>
+@if (User.IsInRole("Admin"))
+{
+    <p>Existen @ViewData["cantAlojamientos"] alojamientos | Cantidad máxima @ViewData["maxAlojamientos"]</p>
+}
+
+<hr />
+<div class="row">
+
+    <div class="col-md-12 bg-light mb-4 bg-opacity-25 pb-2 pt-0">
+
+        <form asp-controller="Alojamientos" asp-action="Index" method="get">
+            <div class="row">
+                <div class="form-group mt-1 col-md-2 align-self-end">
+                    <label class="control-label">Ciudad </label>
+                    <input type="text" name="aCiudad" class="form-control border-info text-info" required />
+                </div>
+
+                <div class="form-group mt-1 col-md-2 align-self-end">
+                    <label class="control-label">Desde </label>
+                    <input class="form-control border-info text-info valid" required type="date"
+                           data-val="true" data-val-required="The fDesde field is required."
+                           id="fDesde" name="fDesde" aria-describedby="fDesde-error" aria-invalid="false">
+                </div>
+
+                <div class="form-group mt-1  col-md-2 align-self-end">
+                    <label class="control-label">Hasta </label>
+                    <input class="form-control border-info text-info valid" required type="date"
+                           data-val="true" data-val-required="The fHasta field is required."
+                           id="fHasta" name="fHasta" aria-describedby="fHasta-error" aria-invalid="false">
+                </div>
+
+                <div class="form-group mt-1 col-md-2 align-self-end">
+                    <label class="control-label">Cantidad de Personas</label>
+                    <input type="number" min="1" name="aCantPersonas" class="form-control border-info text-info" required />
+                </div>
+
+                <div class="form-group mt-1 col-md-2 align-self-end">
+                    <label class="control-label">Tipo de alojamiento</label>
+                    <select class="form-select border-info text-info" id="aTipo" name="aTipo" required>
+                        <option value="Ambos">Ambos</option>
+                        <option value="Hotel">Hotel</option>
+                        <option value="Cabania">Cabania</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-1 col-md-1 align-self-end ">
+                    <label class="align-self-end d-block m-0 text-success">Buscar</label>
+                    <input type="image" value="Filtrar" class="align-bottom" src="/imagenes/search32.png" alt="Buscar" width="32" height="32" />
+                </div>
+
+                <div class="form-group mt-1 col-md-1 align-self-end">
+                    <label class="align-self-end d-block m-0 text-success">Borrar</label>
+                    <a asp-action="Index" class="text-white text-decoration-none m-0"><img src="/imagenes/eraser32.png" alt="limpiar filtros" width="32" height="32" /></a>
+
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@if (@ViewData["aCiudad"] != null)
+{
+<div class="m-0 pb-0 col-md-12 align-self-start">
+    <p>
+        <span class="text-info">Búsqueda:</span> Cantidad de personas <span class="text-info">
+            @ViewData["aCantPersonas"]
+        </span> Ciudad <span class="text-info">
+            @ViewData["aCiudad"]
+        </span>
+        Tipo de alojamiento <span class="text-info">@ViewData["aTipo"]</span> Desde <span class="text-info">@ViewData["fDesde"] </span>
+        Hasta <span class="text-info">@ViewData["fHasta"]</span>
+    </p>
+    <p>
+        <span class="text-info">¿Desea agregar filtros a su búsqueda? </span>
+        @if ((float)@ViewData["aPrecioDesde"] > 0)
+        {
+            <span>Día/Persona desde $</span><span class="text-info">@ViewData["aPrecioDesde"]</span>
+        }
+        @if ((float)@ViewData["aPrecioHasta"] > 0)
+        {
+            <span>Día/Persona hasta $</span><span class="text-info">@ViewData["aPrecioHasta"]</span>
+        }
+        @if ((int)@ViewData["aEstrellas"] > 0)
+        {
+            <span>Estrellas </span><span class="text-info">@ViewData["aEstrellas"]</span>
+        }
+        @if ((float)@ViewData["rPrecioDesde"] > 0)
+        {
+            <span>Reserva desde $</span><span class="text-info">@ViewData["rPrecioDesde"]</span>
+        }
+        @if ((float)@ViewData["rPrecioHasta"] > 0)
+        {
+            <span>Reserva hasta $</span><span class="text-info">@ViewData["rPrecioHasta"]</span>
+        }
+    </p>
+</div>
+
+    <div class="row">
+        <div class="col-md-12 bg-light mb-4 bg-opacity-25 pb-2 pt-0">
+
+            <form asp-controller="Alojamientos" asp-action="Index" method="get">
+                <input type="hidden" name="aCiudad" value="@ViewData["aCiudad"]" />
+                <input type="hidden" name="aCantPersonas" value="@ViewData["aCantPersonas"]" />
+                <input type="hidden" name="fDesde" value="@ViewData["fDesde"]" />
+                <input type="hidden" name="aTipo" value="@ViewData["aTipo"]" />
+                <input type="hidden" name="fHasta" value="@ViewData["fHasta"]" />
+                
+                <div class="row">
+                    <div class="form-group mt-1 col-md-2 align-self-end">
+                        <label class="control-label">Día/Persona desde $ </label>
+                        <input type="number" name="aPrecioDesde" min="1" class="form-control border-info text-info" />
+                    </div>
+
+                    <div class="form-group mt-1 col-md-2 align-self-end">
+                        <label class="control-label">Día/Persona hasta $</label>
+                        <input type="number" name="aPrecioHasta" min="1" class="form-control border-info text-info" />
+                    </div>
+
+                    <div class="form-group mt-1 col-md-2 align-self-end">
+                        <label class="control-label">Reserva desde $ </label>
+                        <input type="number" name="rPrecioDesde" min="1" class="form-control border-info text-info" />
+                    </div>
+
+                    <div class="form-group mt-1 col-md-2 align-self-end">
+                        <label class="control-label">Reserva hasta $</label>
+                        <input type="number" name="rPrecioHasta" min="1" class="form-control border-info text-info" />
+                    </div>
+
+                    <div class="form-group mt-1 col-md-2 align-self-end">
+                        <label class="control-label">Estrellas</label>
+                        <select class="form-select border-info text-info" id="aEstrellas" name="aEstrellas" required>
+                            <option value="0">Estrellas</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-1 col-md-1 align-self-end ">
+                        <label class="align-self-end d-block m-0 text-success">Buscar</label>
+                        <input type="image" value="Filtrar" class="align-bottom" src="/imagenes/search32.png" alt="Buscar" width="32" height="32" />
+                    </div>
+
+                    <div class="form-group mt-1 col-md-1 align-self-end">
+                        <label class="align-self-end d-block m-0 text-success">Borrar</label>
+                        <a asp-action="Index" asp-route-fDesde="@ViewData["fDesde"]"
+                           asp-route-fHasta="@ViewData["fHasta"]" asp-route-aTipo="@ViewData["aTipo"]"
+                           asp-route-aCantPersonas="@ViewData["aCantPersonas"]" asp-route-aCiudad="@ViewData["aCiudad"]" class="text-white text-decoration-none m-0"><img src="/imagenes/eraser32.png" alt="limpiar filtros" width="32" height="32" /></a>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div> 
+}
+
+@if (User.IsInRole("Admin") || (User.IsInRole("User") && @ViewData["aCiudad"] != null))
+{
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-success">
+                <th scope="row">
+                    @Html.DisplayNameFor(model => model)
+                </th>
+                <th scope="row">
+                    Ciudad
+                </th>
+                <th scope="row">
+                    Barrio
+                </th>
+                <th>
+                    @Html.ActionLink("Estrellas ≡", "Index", new { sortOrder = ViewBag.EstrellasSortParm, aCiudad = ViewData["aCiudad"], fDesde = ViewData["fDesde"], fHasta = ViewData["fHasta"], aTipo = ViewData["aTipo"], aCantPersonas = ViewData["aCantPersonas"], aEstrellas = ViewData["aEstrellas"], aPrecioHasta = ViewData["aPrecioHasta"], aPrecioDesde = ViewData["aPrecioDesde"], rPrecioHasta = ViewData["rPrecioHasta"], rPrecioDesde = ViewData["rPrecioDesde"] }, new { style = "color:white; text-decoration:none;" })
+                </th>
+                <th>
+                    @Html.ActionLink("Personas ≡", "Index", new { sortOrder = ViewBag.CapacidadSortParm, aCiudad = ViewData["aCiudad"], fDesde = ViewData["fDesde"], fHasta = ViewData["fHasta"], aTipo = ViewData["aTipo"], aCantPersonas = ViewData["aCantPersonas"], aEstrellas = ViewData["aEstrellas"], aPrecioHasta = ViewData["aPrecioHasta"], aPrecioDesde = ViewData["aPrecioDesde"], rPrecioHasta = ViewData["rPrecioHasta"], rPrecioDesde = ViewData["rPrecioDesde"] }, new { style = "color:white; text-decoration:none;" })
+                </th>
+                <th scope="row">
+                    TV
+                </th>
+                <th scope="row">
+                    Tipo
+                </th>
+                <th>
+                    @Html.ActionLink("$ por día ≡", "Index", new { sortOrder = ViewBag.PrecioDiaSortParm, aCiudad = ViewData["aCiudad"], fDesde = ViewData["fDesde"], fHasta = ViewData["fHasta"], aTipo = ViewData["aTipo"], aCantPersonas = ViewData["aCantPersonas"], aEstrellas = ViewData["aEstrellas"], aPrecioHasta = ViewData["aPrecioHasta"], aPrecioDesde = ViewData["aPrecioDesde"], rPrecioHasta = ViewData["rPrecioHasta"], rPrecioDesde = ViewData["rPrecioDesde"] }, new { style = "color:white; text-decoration:none;" })
+                </th>
+                <th scope="row">
+                    Dorms.
+                </th>
+                <th scope="row">
+                    Baños
+                </th>
+                <th>
+                    @Html.ActionLink("$ por persona ≡", "Index", new { sortOrder = ViewBag.PrecioPersonaSortParm, aCiudad = ViewData["aCiudad"], fDesde = ViewData["fDesde"], fHasta = ViewData["fHasta"], aTipo = ViewData["aTipo"], aCantPersonas = ViewData["aCantPersonas"], aEstrellas = ViewData["aEstrellas"], aPrecioHasta = ViewData["aPrecioHasta"], aPrecioDesde = ViewData["aPrecioDesde"], rPrecioHasta = ViewData["rPrecioHasta"], rPrecioDesde = ViewData["rPrecioDesde"] }, new { style = "color:white; text-decoration:none;" })
+                </th>
+                <th scope="row">
+                    Acciones
+                </th>
+                @if (@ViewData["aCiudad"] != null)
+                {
+                    <th>
+                        @Html.ActionLink("$ reserva ≡", "Index", new { sortOrder = ViewBag.PrecioReservaSortParm, aCiudad = ViewData["aCiudad"], fDesde = ViewData["fDesde"], fHasta = ViewData["fHasta"], aTipo = ViewData["aTipo"], aCantPersonas = ViewData["aCantPersonas"], aEstrellas = ViewData["aEstrellas"], aPrecioHasta = ViewData["aPrecioHasta"], aPrecioDesde = ViewData["aPrecioDesde"], rPrecioHasta = ViewData["rPrecioHasta"], rPrecioDesde = ViewData["rPrecioDesde"] }, new { style = "color:white; text-decoration:none;" })
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr class="table-dark">
+                <td class="text-info">
+                    @Html.DisplayFor(modelItem => item.aCodigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.aCiudad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.aBarrio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.aEstrellas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.aCantPersonas)
+                </td>
+                @if (@Html.DisplayTextFor(modelItem => item.aTV).ToUpper() == "TRUE")
+                {
+                    <td>Sí</td>
+                }
+                else
+                {
+                    <td>No</td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                @if (@Html.DisplayTextFor(modelItem => item.Tipo) == "Cabania")
+                {
+                    <td>
+                        $ @Html.DisplayFor(modelItem => item.cPrecioxDia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cHabitaciones)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cbanios)
+                    </td>
+                    <td>
+                        -
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        $ @Html.DisplayFor(modelItem => item.hPrecioxPersona)
+                    </td>
+                }
+
+                <td>
+                    @if (@ViewData["aCiudad"] != null)
+                    {
+                        <a asp-area="" asp-controller="Reservas" asp-action="Create"
+                           asp-route-propiedadId="@item.id" asp-route-fDesde="@ViewData["fDesde"]"
+                           asp-route-fHasta="@ViewData["fHasta"]" asp-route-aTipo="@ViewData["aTipo"]"
+                           asp-route-aCantPersonas="@ViewData["aCantPersonas"]" asp-route-aCiudad="@ViewData["aCiudad"]"
+                           asp-route-aTipoElegido="@item.Tipo">
+                            <img src="/imagenes/reservar32.png" alt="detalles" width="32" height="32" />
+                        </a>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.id"><img src="/imagenes/edit32.png" alt="editar" width="32" height="32" /></a>
+                        <a asp-action="Delete" asp-route-id="@item.id"><img src="/imagenes/suprimir32.png" alt="eliminar" width="32" height="32" /></a>
+                    }
+                </td>
+
+                @if (@ViewData["aCiudad"] != null)
+                {
+                    <td>
+                        @(((Dictionary<int, float>)ViewBag.ListaPrecio)[item.id])
+                    </td>
+                }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
